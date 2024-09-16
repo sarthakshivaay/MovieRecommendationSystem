@@ -8,13 +8,11 @@ import os
 def download_file_from_dropbox(url, destination):
     try:
         response = requests.get(url, stream=True)
-        # Check if the request was successful
         if response.status_code == 200:
             with open(destination, 'wb') as f:
                 for chunk in response.iter_content(chunk_size=32768):
                     if chunk:
                         f.write(chunk)
-            st.write(f"Downloaded {destination} successfully!")
             return True
         else:
             st.error(f"Failed to download {destination}. Status code: {response.status_code}")
@@ -31,22 +29,19 @@ def is_html_file(filepath):
             if content.strip().startswith('<'):
                 return True
     except UnicodeDecodeError:
-        # If decoding fails, it's likely a binary file, which is expected for .pkl
         return False
     return False
 
 # Replace these with your modified Dropbox direct download links
-movie_dict_url = 'https://www.dropbox.com/scl/fi/jcjskwm53go2aqjnzn44k/movie_dict.pkl?rlkey=wye7qf4yom13h52i99pbgsgzs&st=tfukdnbq&dl=0'
+movie_dict_url = 'https://www.dropbox.com/scl/fi/jcjskwm53go2aqjnzn44k/movie_dict.pkl?rlkey=wye7qf4yom13h52i99pbgsgzs&st=tfukdnbq&dl=1'
 similarity_url = 'https://www.dropbox.com/scl/fi/wfi9zxwcy84v8wasyvlwj/similarity.pkl?rlkey=h911dapm4ls60i7qxfy0iuhfl&st=b0vnzwss&dl=1'
 
 # Download the files if they don't exist locally
 if not os.path.exists('movie_dict.pkl'):
-    st.write("Downloading movie_dict.pkl...")
     if not download_file_from_dropbox(movie_dict_url, 'movie_dict.pkl'):
         st.stop()
 
 if not os.path.exists('similarity.pkl'):
-    st.write("Downloading similarity.pkl...")
     if not download_file_from_dropbox(similarity_url, 'similarity.pkl'):
         st.stop()
 
@@ -61,15 +56,8 @@ try:
         movies_list = pickle.load(file)
     with open('similarity.pkl', 'rb') as file:
         similarity = pickle.load(file)
-    st.write("Files loaded successfully!")
 except (pickle.UnpicklingError, EOFError) as e:
     st.error(f"Error unpickling files: {e}. The file might be corrupted or not downloaded properly.")
-    st.stop()
-except FileNotFoundError as e:
-    st.error(f"File not found: {e}")
-    st.stop()
-except Exception as e:
-    st.error(f"An unexpected error occurred: {e}")
     st.stop()
 
 # Function to fetch movie posters from TMDB API
