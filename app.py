@@ -6,7 +6,7 @@ import os
 
 
 def download_file_from_google_drive(file_id, destination):
-    URL = "https://drive.google.com/drive/folders/1pzd7V_f8b2mkx1RlQ5ryUdSoa6Oc58EI?usp=drive_link"
+    URL = "https://docs.google.com/uc?export=download"
     session = requests.Session()
     response = session.get(URL, params={'id': file_id}, stream=True)
     
@@ -36,11 +36,6 @@ if not os.path.exists('movie_dict.pkl'):
 
 if not os.path.exists('similarity.pkl'):
     download_file_from_google_drive(similarity_file_id, 'similarity.pkl')
-
-# Continue with your usual code
-import pickle
-movies_list = pickle.load(open('movie_dict.pkl', 'rb'))
-similarity = pickle.load(open('similarity.pkl', 'rb'))
 
 
 
