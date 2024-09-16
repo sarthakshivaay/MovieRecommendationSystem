@@ -37,7 +37,9 @@ if not os.path.exists('movie_dict.pkl'):
 if not os.path.exists('similarity.pkl'):
     download_file_from_google_drive(similarity_file_id, 'similarity.pkl')
 
+movies_list=pickle.load(open('movie_dict.pkl','rb'))
 
+similarity=pickle.load(open('similarity.pkl','rb'))
 
 def fetch_poster(movie_id):
     response=requests.get("https://api.themoviedb.org/3/movie/{}?api_key=efeeca2923c7893b0cfd5384de62d8fb&language=en-US".format(movie_id))
@@ -59,9 +61,6 @@ def recommend(movie):
 
 st.title('Movie Recommender System')
 
-movies_list=pickle.load(open('movie_dict.pkl','rb'))
-
-similarity=pickle.load(open('similarity.pkl','rb'))
 movies=pd.DataFrame(movies_list)
 
 
