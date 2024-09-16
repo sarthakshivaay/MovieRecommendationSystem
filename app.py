@@ -35,9 +35,9 @@ def is_html_file(filepath):
         return False
     return False
 
-# Replace these with your Dropbox direct download links (make sure dl=1 for direct download)
-movie_dict_url = 'https://www.dropbox.com/scl/fi/jcjskwm53go2aqjnzn44k/movie_dict.pkl?rlkey=wye7qf4yom13h52i99pbgsgzs&st=xn4yk0be&dl=1'
-similarity_url = 'https://www.dropbox.com/scl/fi/wfi9zxwcy84v8wasyvlwj/similarity.pkl?rlkey=h911dapm4ls60i7qxfy0iuhfl&st=uv4ouf00&dl=1'
+# Replace these with your modified Dropbox direct download links
+movie_dict_url = 'https://www.dropbox.com/scl/fi/jcjskwm53go2aqjnzn44k/movie_dict.pkl?rlkey=wye7qf4yom13h52i99pbgsgzs&st=tfukdnbq&dl=0'
+similarity_url = 'https://www.dropbox.com/scl/fi/wfi9zxwcy84v8wasyvlwj/similarity.pkl?rlkey=h911dapm4ls60i7qxfy0iuhfl&st=b0vnzwss&dl=1'
 
 # Download the files if they don't exist locally
 if not os.path.exists('movie_dict.pkl'):
