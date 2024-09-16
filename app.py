@@ -2,6 +2,46 @@ import streamlit as st
 import pickle 
 import pandas  as pd
 import requests
+import os
+
+
+def download_file_from_google_drive(file_id, destination):
+    URL = "https://drive.google.com/drive/folders/1pzd7V_f8b2mkx1RlQ5ryUdSoa6Oc58EI?usp=drive_link"
+    session = requests.Session()
+    response = session.get(URL, params={'id': file_id}, stream=True)
+    
+    # Get the confirmation token, if present
+    token = None
+    for key, value in response.cookies.items():
+        if key.startswith('download_warning'):
+            token = value
+            break
+
+    if token:
+        response = session.get(URL, params={'id': file_id, 'confirm': token}, stream=True)
+
+    # Save the file to the specified destination
+    with open(destination, 'wb') as f:
+        for chunk in response.iter_content(chunk_size=32768):
+            if chunk:
+                f.write(chunk)
+
+# Replace these with your file IDs from Google Drive
+movie_dict_file_id = '1SMdnSWEVKLQeOeEjrfOeGjD7sefg_ZFl' 
+similarity_file_id = '1HJ66TU3K_MWbh7mE6E-BL4JBi5LCPzM4'
+
+# Download the files if they don't exist locally
+if not os.path.exists('movie_dict.pkl'):
+    download_file_from_google_drive(movie_dict_file_id, 'movie_dict.pkl')
+
+if not os.path.exists('similarity.pkl'):
+    download_file_from_google_drive(similarity_file_id, 'similarity.pkl')
+
+# Continue with your usual code
+import pickle
+movies_list = pickle.load(open('movie_dict.pkl', 'rb'))
+similarity = pickle.load(open('similarity.pkl', 'rb'))
+
 
 
 def fetch_poster(movie_id):
